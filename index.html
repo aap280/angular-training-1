@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+  <head>
+    <title>To-Do List</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Polyfill(s) for older browsers -->
+    <script src="node_modules/core-js/client/shim.min.js"></script>
+
+    <script src="node_modules/zone.js/dist/zone.js"></script>
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
+
+    <script src="systemjs.config.js"></script>
+    <script>
+      System.import('app').catch(function(err){ console.error(err); });
+    </script>
+  </head>
+
+  <body>
+  <style>
+    .centerBox {
+      margin: auto;
+      width: 60%;
+      border: 3px solid #73AD21;
+      padding: 10px;
+    }
+    .center {
+      margin: auto;
+      width: 30%;
+      padding: 10px;
+    }
+    .centerTitle {
+      text-align: center;
+    }
+    </style>
+    <div class="centerTitle">
+    <my-app>Loading AppComponent content here ...</my-app>
+    </div>
+
+    <script>
+    var app = angular.module("toDoList", []);
+      app.controller("toDoCtrl", function($scope) {
+        $scope.items = ["Wake Up", "What happened?"];
+        $scope.addItem = function () {
+          $scope.errortext = "";
+          if (!$scope.addMe) {return;}
+          if ($scope.items.indexOf($scope.addMe) == -1) {
+          $scope.items.push($scope.addMe);
+          } 
+          else {
+            $scope.errortext = "Duplicate Task";
+          }
+        }
+
+        $scope.removeItem = function (x) {
+          $scope.errortext = "";
+          $scope.items.splice(x,1);
+        }
+    });
+    </script>
+    <script>
+      angular.module('checkbox', [])
+      $scope.controller('checkboxCtrl', ['$scop', function($scope) {
+        $scope.checkboxModel = {
+          value : false
+        };
+      }]);
+      </script>
+    <div class="centerBox">
+    <div ng-app="toDoList" ng-controller="toDoCtrl">
+      <div class="center">
+        <p>{{errortext}}</p>
+        <input ng-model="addMe">
+        <button ng-click="addItem($event)">Add</button>
+        <ng-keypress ng-keypress="$event.which === 13 && addItem($event)"></ng-keypress>
+        <p ng-repeat="x in items"><input type="checkbox" ng-model=checkboxModel.value>
+          {{x}}
+          <span ng-click="removeItem($index)">[remove]</span>
+        </p>
+      </div>
+    </div>
+    </div>
+  </body>
+</html>
