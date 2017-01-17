@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+  <script src="app/app.module.js"></script>
   <head>
     <title>To-Do List</title>
     <meta charset="UTF-8">
@@ -35,10 +36,14 @@
     .centerTitle {
       text-align: center;
     }
+    .changeToPointer{
+      cursor: pointer;
+    }
     </style>
     <div class="centerTitle">
     <my-app>Loading AppComponent content here ...</my-app>
     </div>
+
 
     <script>
     var app = angular.module("toDoList", []);
@@ -49,21 +54,32 @@
           if (!$scope.addMe) {return;}
           if ($scope.items.indexOf($scope.addMe) == -1) {
           $scope.items.push($scope.addMe);
-          } 
+          }
           else {
             $scope.errortext = "Duplicate Task";
           }
         }
-
         $scope.removeItem = function (x) {
           $scope.errortext = "";
           $scope.items.splice(x,1);
         }
+        $scope.myEnter = function(keyEvent) {
+          if (keyEvent.which === 13) {
+            if (!$scope.addMe) {return;}
+            if ($scope.items.indexOf($scope.addMe) == -1) {
+            $scope.items.push($scope.addMe);
+            }
+            else {
+              $scope.errortext = "Duplicate Task";
+            }
+          }
+        }
     });
     </script>
+
     <script>
       angular.module('checkbox', [])
-      $scope.controller('checkboxCtrl', ['$scop', function($scope) {
+      $scope.controller('checkboxCtrl', ['$scope', function($scope) {
         $scope.checkboxModel = {
           value : false
         };
@@ -73,19 +89,13 @@
     <div ng-app="toDoList" ng-controller="toDoCtrl">
       <div class="center">
         <p>{{errortext}}</p>
-        <input ng-model="addMe" id="toDoBox">
-        <script>
-          document.querySelector("toDoBox").addEventListener("keypress", addItem($event) {
-            var key = addItem.which || addItem.keyCode;
-            if (key === 13) {
-              alert('the enter key worked')
-            }
-          })
-        </script>
-        <button ng-click="addItem($event)">Add</button>
+        <input ng-model="addMe" ng-keypress="myEnter($event)" id="toDoBox">
+        <button ng-click="addItem($event)" class="changeToPointer">Add</button>
         <p ng-repeat="x in items"><input type="checkbox" ng-model=checkboxModel.value>
           {{x}}
-          <span ng-click="removeItem($index)">[remove]</span>
+          <span ng-click="removeItem($index)" class="changeToPointer">
+            <font color = "#E74C3C">[X]</font>
+          </span>
         </p>
       </div>
     </div>
