@@ -8,6 +8,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="styles.css">
 
+    <script src="./controllers/todo.js"></script>
+    <script src="./controllers/checkbox.js"></script>
     <!-- Polyfill(s) for older browsers -->
     <script src="node_modules/core-js/client/shim.min.js"></script>
 
@@ -20,79 +22,19 @@
     </script>
   </head>
 
-  <body>
-  <style>
-    .centerBox {
-      margin: auto;
-      width: 60%;
-      border: 3px solid #73AD21;
-      padding: 10px;
-    }
-    .center {
-      margin: auto;
-      width: 30%;
-      padding: 10px;
-    }
-    .centerTitle {
-      text-align: center;
-    }
-    .changeToPointer{
-      cursor: pointer;
-    }
-    </style>
+  <body ng-app="toDoList">
     <div class="centerTitle">
     <my-app>Loading AppComponent content here ...</my-app>
     </div>
 
-
-    <script>
-    var app = angular.module("toDoList", []);
-      app.controller("toDoCtrl", function($scope) {
-        $scope.items = ["Wake Up", "What happened?"];
-        $scope.addItem = function () {
-          $scope.errortext = "";
-          if (!$scope.addMe) {return;}
-          if ($scope.items.indexOf($scope.addMe) == -1) {
-          $scope.items.push($scope.addMe);
-          }
-          else {
-            $scope.errortext = "Duplicate Task";
-          }
-        }
-        $scope.removeItem = function (x) {
-          $scope.errortext = "";
-          $scope.items.splice(x,1);
-        }
-        $scope.myEnter = function(keyEvent) {
-          if (keyEvent.which === 13) {
-            if (!$scope.addMe) {return;}
-            if ($scope.items.indexOf($scope.addMe) == -1) {
-            $scope.items.push($scope.addMe);
-            }
-            else {
-              $scope.errortext = "Duplicate Task";
-            }
-          }
-        }
-    });
-    </script>
-
-    <script>
-      angular.module('checkbox', [])
-      $scope.controller('checkboxCtrl', ['$scope', function($scope) {
-        $scope.checkboxModel = {
-          value : false
-        };
-      }]);
-      </script>
     <div class="centerBox">
-    <div ng-app="toDoList" ng-controller="toDoCtrl">
+    <div ng-controller="toDoCtrl">
       <div class="center">
         <p>{{errortext}}</p>
         <input ng-model="addMe" ng-keypress="myEnter($event)" id="toDoBox">
         <button ng-click="addItem($event)" class="changeToPointer">Add</button>
         <p ng-repeat="x in items"><input type="checkbox" ng-model=checkboxModel.value>
-          {{x}}
+          {{x.name}}
           <span ng-click="removeItem($index)" class="changeToPointer">
             <font color = "#E74C3C">[X]</font>
           </span>
